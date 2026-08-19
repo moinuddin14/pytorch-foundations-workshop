@@ -136,8 +136,15 @@ h3 { font-size: 1.25rem; }
 .code-wrap { position: relative; }
 .code-wrap pre { padding-top: 48px; }
 .copy-code { position: absolute; top: 9px; right: 9px; z-index: 2; min-width: 62px; min-height: 32px; padding: 4px 9px; border: 1px solid #3d455c; border-radius: 7px; color: #cbd2e8; background: #20283a; font-size: .73rem; font-weight: 750; cursor: pointer; }
-.output { margin: -10px 0 24px; padding: 13px 17px; border: 1px solid #d3dae4; border-radius: 0 0 12px 12px; background: #fff; }
-.output::before { content: "OUTPUT"; display: block; margin-bottom: 7px; color: var(--muted); font-size: .65rem; font-weight: 900; letter-spacing: .12em; }
+.article-body .output { margin: -10px 0 24px; border-color: #d3dae4; border-radius: 0 0 12px 12px; background: #fff; }
+.article-body .output summary { color: #354055; font-size: .82rem; letter-spacing: 0; }
+.article-body .output summary::after { content: "+"; margin-left: auto; color: var(--blue); font-size: 1.1rem; line-height: 1; }
+.article-body .output[open] summary { border-bottom: 1px solid #d3dae4; }
+.article-body .output[open] summary::after { content: "−"; }
+.output-hide { display: none; }
+.output[open] .output-show { display: none; }
+.output[open] .output-hide { display: inline; }
+.output-body { padding: 13px 17px; }
 .output pre { margin: 0; padding: 0; color: #354055; background: transparent; font-size: .78rem; }
 .article-body details { margin: 25px 0; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
 .article-body summary { min-height: 50px; display: flex; align-items: center; padding: 10px 16px; color: var(--blue); font-weight: 800; cursor: pointer; }

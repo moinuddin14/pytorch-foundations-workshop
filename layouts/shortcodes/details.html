@@ -1,0 +1,4 @@
+<details class="details-block">
+  <summary>{{ .Get "summary" | default "Show details" }}</summary>
+  <div class="details-body">{{ .Inner | markdownify }}</div>
+</details>

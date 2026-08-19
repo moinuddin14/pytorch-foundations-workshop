@@ -1,0 +1,41 @@
+baseURL = "https://moinuddin14.github.io/pytorch-foundations-workshop/"
+locale = "en-US"
+title = "PyTorch Foundations"
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term", "rss"]
+
+[params]
+  description = "A practical, mobile-first PyTorch workshop: tensors, autograd, modules, training loops, and two build-from-scratch projects."
+  githubRepo = "https://github.com/moinuddin14/pytorch-foundations-workshop"
+  repoSlug = "moinuddin14/pytorch-foundations-workshop"
+  workshopDate = "22 August 2026"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    guessSyntax = true
+
+[[menu.main]]
+  name = "Start"
+  pageRef = "/getting-started"
+  weight = 10
+[[menu.main]]
+  name = "Modules"
+  pageRef = "/modules"
+  weight = 20
+[[menu.main]]
+  name = "Practice"
+  pageRef = "/practice"
+  weight = 30
+[[menu.main]]
+  name = "Projects"
+  pageRef = "/projects"
+  weight = 40
+[[menu.main]]
+  name = "Cheatsheet"
+  pageRef = "/reference/cheatsheet"
+  weight = 50

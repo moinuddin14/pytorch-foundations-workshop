@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <section class="list-hero container">
+    {{ partial "breadcrumbs.html" . }}
+    <p class="eyebrow">Workshop path</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+    {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
+  </section>
+  <section class="card-list container" aria-label="{{ .Title }} pages">
+    {{ range .Pages.ByWeight }}
+      <a class="content-card" href="{{ .RelPermalink }}" data-card-path="{{ .RelPermalink }}">
+        <span class="card-kicker">Step {{ printf "%02d" .Weight }}</span>
+        <h2>{{ .Title }}</h2>
+        <p>{{ .Description }}</p>
+        <span class="card-status">Open lesson →</span>
+      </a>
+    {{ end }}
+  </section>
+{{ end }}

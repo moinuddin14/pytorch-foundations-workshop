@@ -1,0 +1,30 @@
+{{ define "main" }}
+  <div class="page-shell">
+    <article class="article">
+      {{ partial "breadcrumbs.html" . }}
+      <header class="article-header">
+        {{ with .CurrentSection }}<p class="eyebrow">{{ .Title }}</p>{{ end }}
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+        {{ with .Params.notebook }}
+          {{ partial "lesson-actions.html" (dict "notebook" . "site" $.Site) }}
+        {{ end }}
+      </header>
+      <div class="article-body">
+        {{ .Content }}
+      </div>
+      {{ if ne .Params.completable false }}
+        <button class="complete-button" type="button" data-complete-page="{{ .RelPermalink }}">
+          <span aria-hidden="true">✓</span> Mark complete
+        </button>
+      {{ end }}
+      {{ partial "page-nav.html" . }}
+    </article>
+    {{ if gt (len .TableOfContents) 100 }}
+      <aside class="toc" aria-label="On this page">
+        <p class="toc-title">On this page</p>
+        {{ .TableOfContents }}
+      </aside>
+    {{ end }}
+  </div>
+{{ end }}

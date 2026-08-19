@@ -1,0 +1,72 @@
+{{ define "main" }}
+  <section class="home-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Tensor → Gradient → Model</p>
+        <h1>Learn PyTorch by building it.</h1>
+        <p class="hero-copy">Seven practical lessons, four implementation labs, and two from-scratch projects—readable on any phone and runnable in Google Colab.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="{{ "getting-started/" | relURL }}">Start here</a>
+          <a class="button secondary" href="{{ "modules/" | relURL }}">Browse modules</a>
+        </div>
+        <div class="hero-meta" aria-label="Workshop details">
+          <span><strong>3.5h</strong> workshop</span>
+          <span><strong>70%</strong> hands-on</span>
+          <span><strong>0</strong> setup on phone</span>
+        </div>
+      </div>
+      <div class="loop-card" aria-label="The PyTorch training loop">
+        <p class="loop-label">The loop you will master</p>
+        <ol>
+          <li><span>01</span><code>pred = model(x)</code></li>
+          <li><span>02</span><code>loss = loss_fn(pred, y)</code></li>
+          <li><span>03</span><code>opt.zero_grad()</code></li>
+          <li><span>04</span><code>loss.backward()</code></li>
+          <li><span>05</span><code>opt.step()</code></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="container home-section">
+    <div class="section-heading">
+      <div><p class="eyebrow">The learning path</p><h2>One idea at a time</h2></div>
+      <a href="{{ "modules/" | relURL }}">View all modules →</a>
+    </div>
+    <div class="path-grid">
+      <a href="{{ "modules/02-inside-a-tensor/" | relURL }}"><span>01</span><h3>Tensor</h3><p>Shape, memory, broadcasting, devices.</p></a>
+      <a href="{{ "modules/03-autograd-without-magic/" | relURL }}"><span>02</span><h3>Gradient</h3><p>Graphs, backward, accumulation, gradcheck.</p></a>
+      <a href="{{ "modules/04-modules-and-parameters/" | relURL }}"><span>03</span><h3>Model</h3><p>Parameters, state, modes, training.</p></a>
+    </div>
+  </section>
+
+  <section class="practice-band">
+    <div class="container practice-grid">
+      <div>
+        <p class="eyebrow">Use only your phone</p>
+        <h2>Tap. Run. Change. Repeat.</h2>
+        <p>Every lesson links to a Google Colab notebook. Open it in your browser, save a copy, and run real PyTorch without installing anything.</p>
+        <a class="button light" href="{{ "getting-started/#phone" | relURL }}">Phone instructions</a>
+      </div>
+      <div class="phone-mock" aria-hidden="true">
+        <div class="phone-top"></div>
+        <div class="phone-screen">
+          <span class="mini-label">TRY IT</span>
+          <code>x = torch.tensor(2.0,<br>&nbsp;&nbsp;requires_grad=True)<br>y = x ** 2<br>y.backward()</code>
+          <div class="run-pill">▶ Run cell</div>
+          <pre>x.grad → tensor(4.)</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container home-section">
+    <div class="section-heading">
+      <div><p class="eyebrow">Build from scratch</p><h2>Finish with proof</h2></div>
+    </div>
+    <div class="project-grid">
+      <a href="{{ "projects/project-1-linear/" | relURL }}"><span>Project 01</span><h3>Rebuild <code>nn.Linear</code></h3><p>Register weights, implement the formula, compare outputs, and check gradients.</p></a>
+      <a href="{{ "projects/project-2-xor/" | relURL }}"><span>Project 02</span><h3>Solve XOR with your MLP</h3><p>Write ReLU, softmax, cross-entropy, and a two-layer classifier.</p></a>
+    </div>
+  </section>
+{{ end }}

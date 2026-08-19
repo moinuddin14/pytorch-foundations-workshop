@@ -1,0 +1,6 @@
+{{ $colab := printf "https://colab.research.google.com/github/%s/blob/main/%s" .site.Params.repoSlug .notebook }}
+{{ $source := printf "%s/blob/main/%s" .site.Params.githubRepo .notebook }}
+<div class="lesson-actions">
+  <a class="button colab-button" href="{{ $colab }}" rel="external"><span aria-hidden="true">▶</span> Open in Colab</a>
+  <a class="button source-button" href="{{ $source }}" rel="external">View notebook</a>
+</div>

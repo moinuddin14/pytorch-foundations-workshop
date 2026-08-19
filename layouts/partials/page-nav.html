@@ -1,0 +1,4 @@
+<nav class="page-nav" aria-label="Lesson navigation">
+  {{ with .NextInSection }}<a class="prev" href="{{ .RelPermalink }}"><span>Previous</span>← {{ .Title }}</a>{{ else }}<span></span>{{ end }}
+  {{ with .PrevInSection }}<a class="next" href="{{ .RelPermalink }}"><span>Next</span>{{ .Title }} →</a>{{ end }}
+</nav>

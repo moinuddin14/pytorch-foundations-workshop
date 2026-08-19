@@ -4,12 +4,12 @@ Keep this beside your editor. Copy a pattern, run it, then adapt it.
 
 ## The mental model
 
-```
-   x ──▶ model(x) ──▶ loss ──▶ loss.backward() ──▶ gradients ──▶ optimizer.step()
-   │                     │        (autograd)                        (weights update)
-   weights ──────────────┘───────────────────────────────────────────────┘
-                        optimizer.zero_grad() resets the gradient accumulator
-```
+<figure class="article-figure">
+  <a href="../static/images/pytorch-training-mental-model.svg">
+    <img src="../static/images/pytorch-training-mental-model.svg" alt="Five-step PyTorch training loop: make a prediction, measure loss, clear old gradients, use autograd to calculate parameter gradients, and update weights before the next step.">
+  </a>
+  <figcaption>Read top to bottom. Blue is the forward pass, purple is the backward pass, and orange shows updated weights returning to the model. Tap the diagram to open the scalable version, or <a href="../static/images/pytorch-training-mental-model.png">download the high-resolution PNG</a>.</figcaption>
+</figure>
 
 **PyTorch = tensors + autograd + `nn`.** Every feature serves this loop.
 

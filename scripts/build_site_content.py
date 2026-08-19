@@ -457,6 +457,7 @@ def build_practice() -> None:
 
 def build_reference() -> None:
     cheatsheet = strip_first_heading((ROOT / "docs/CHEATSHEET.md").read_text())
+    cheatsheet = cheatsheet.replace("../static/images/", "../../images/")
     write(
         CONTENT / "reference/cheatsheet.md",
         front_matter(

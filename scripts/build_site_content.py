@@ -32,8 +32,8 @@ MODULES = [
     {
         "source": "notebooks/03_autograd_without_magic.ipynb",
         "target": "content/modules/03-autograd-without-magic.md",
-        "title": "Autograd without magic",
-        "description": "Predict gradients, inspect the graph, update a parameter, and debug accumulation.",
+        "title": "Autograd: how PyTorch learns",
+        "description": "See why gradients exist, use them to improve a prediction, and train a line from scratch.",
         "weight": 3,
     },
     {

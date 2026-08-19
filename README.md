@@ -23,7 +23,7 @@ The Hugo site contains the complete learning path, compact explanations, runnabl
 |---:|---|---|
 | 1 | [What exactly is PyTorch?](notebooks/01_what_is_pytorch.ipynb) | Compare NumPy with autograd; modify a complete training loop. |
 | 2 | [Inside a tensor](notebooks/02_tensors_properly.ipynb) | Reshape image batches, debug contiguity, broadcast, move devices, vectorize. |
-| 3 | [Autograd without magic](notebooks/03_autograd_without_magic.ipynb) | Predict gradients, reproduce accumulation, manually update a weight, run gradcheck. |
+| 3 | [Autograd: how PyTorch learns](notebooks/03_autograd_without_magic.ipynb) | Improve one prediction with gradients, train a line manually, and fix accumulation. |
 | 4 | [`nn.Module` and parameters](notebooks/04_nn_module_and_parameters.ipynb) | Fix registration, save/reload state, test train/eval behavior. |
 | 5 | [The training loop](notebooks/05_the_training_loop.ipynb) | Reimplement SGD, sweep learning rates, batch data, validate safely. |
 | 6 | [Project 1 starter](projects/project1_linear_from_scratch.py), then [checks and reveal](notebooks/06_project1_build_nn_linear.ipynb) | Build, compare, gradient-check, and train `MyLinear`. |

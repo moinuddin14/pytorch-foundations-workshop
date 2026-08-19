@@ -93,16 +93,16 @@ Success evidence: each learner completes the practical checkpoint at the bottom 
 
 Open [Notebook 03](../notebooks/03_autograd_without_magic.ipynb).
 
-1. Learners predict `dy/dx` and `dy/dw` before `backward()`.
-2. They modify `b` so it receives a gradient and assert `b.grad == 1`.
-3. Run one manual regression update; print weights before and after.
-4. Reproduce gradient accumulation, then repair it.
-5. Compare normal execution with `no_grad()`.
-6. Implement and run the central-difference gradient check at three points.
+1. Start with the intended use: gradients show how each trainable value affected the loss.
+2. Verify the gradient of `x²` at `x = 3`, then change `x` and predict again.
+3. Use weight and bias gradients to move one prediction from `2` toward `10`.
+4. Repeat forward, loss, backward, and update to learn `y = 3x + 0.5`.
+5. Reproduce gradient accumulation, then repair it by clearing `.grad`.
+6. Compare `no_grad()` with `detach()`, then run the compact optimizer version.
 
-Say only: “Backward walks recorded operations in reverse, applies the chain rule, and adds results to `.grad`.”
+Say only: “The loss says how wrong the prediction is; autograd tells each trainable value how it contributed to that error.”
 
-Do not skip accumulation or gradcheck.
+Do not skip the one-prediction update or the accumulation bug. Those two examples establish why gradients are useful and why they must be cleared.
 
 Success evidence: learners implement two scalar gradient-descent steps without an optimizer.
 

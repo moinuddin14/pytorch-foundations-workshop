@@ -7,6 +7,8 @@ disableKinds = ["taxonomy", "term", "rss"]
 [params]
   description = "A practical, mobile-first PyTorch workshop: tensors, autograd, modules, training loops, and two build-from-scratch projects."
   githubRepo = "https://github.com/moinuddin14/pytorch-foundations-workshop"
+  linkedin = "https://www.linkedin.com/in/khaja143/"
+  meetup = "https://www.meetup.com/aiyatra/"
   repoSlug = "moinuddin14/pytorch-foundations-workshop"
   workshopDate = "22 August 2026"
 

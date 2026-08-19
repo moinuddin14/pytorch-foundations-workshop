@@ -1,14 +1,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1020">
+<meta name="theme-color" content="#0b57e3">
 <meta name="description" content="{{ .Description | default site.Params.description }}">
 <title>{{ if .IsHome }}{{ site.Title }} — Practical PyTorch Workshop{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 <link rel="canonical" href="{{ .Permalink }}">
 <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
-<link rel="icon" href="{{ "icon.svg" | relURL }}" type="image/svg+xml">
+{{- $logo := resources.Get "images/aiyatra-logo.png" -}}
+{{- $favicon := $logo.Resize "96x96 png" -}}
+{{- $shareLogo := $logo.Resize "600x600 webp q90" -}}
+<link rel="icon" href="{{ $favicon.RelPermalink }}" type="image/png">
 {{ $css := resources.Get "css/site.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 <meta property="og:title" content="{{ .Title }}">
 <meta property="og:description" content="{{ .Description | default site.Params.description }}">
 <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:image" content="{{ $shareLogo.Permalink }}">

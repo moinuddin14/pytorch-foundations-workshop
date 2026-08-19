@@ -5,8 +5,8 @@
   "start_url": "/pytorch-foundations-workshop/",
   "scope": "/pytorch-foundations-workshop/",
   "display": "standalone",
-  "background_color": "#f7f5ef",
-  "theme_color": "#101426",
+  "background_color": "#ffffff",
+  "theme_color": "#0b57e3",
   "icons": [
     {
       "src": "/pytorch-foundations-workshop/icon.svg",

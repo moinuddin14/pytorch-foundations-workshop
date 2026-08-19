@@ -1,7 +1,13 @@
 {{ define "main" }}
+  {{- $logo := resources.Get "images/aiyatra-logo.png" -}}
+  {{- $heroLogo := $logo.Resize "360x360 webp q90" -}}
   <section class="home-hero">
     <div class="container hero-grid">
       <div>
+        <div class="hero-presenter">
+          <img src="{{ $heroLogo.RelPermalink }}" width="118" height="118" alt="AI Yatra — Research. Build. Transform.">
+          <div><span>AI Yatra presents</span><strong>PyTorch Foundations Workshop</strong></div>
+        </div>
         <p class="eyebrow">Tensor → Gradient → Model</p>
         <h1>Learn PyTorch by building it.</h1>
         <p class="hero-copy">Seven practical lessons, four implementation labs, and two from-scratch projects—readable on any phone and runnable in Google Colab.</p>

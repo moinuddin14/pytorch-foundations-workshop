@@ -26,7 +26,7 @@ MODULES = [
         "source": "notebooks/02_tensors_properly.ipynb",
         "target": "content/modules/02-inside-a-tensor.md",
         "title": "Inside a tensor",
-        "description": "Work with shapes, strides, broadcasting, dtypes, devices, and vectorized operations.",
+        "description": "Work with shapes, strides, broadcasting, element-wise and matrix multiplication, dtypes, and devices.",
         "weight": 2,
     },
     {
@@ -81,7 +81,7 @@ PRACTICE = [
         "answer": "exercises/answers/02_tensors_answers.py",
         "target": "content/practice/02-tensor-lab.md",
         "title": "Tensor implementation lab",
-        "description": "Five shape, broadcasting, storage, speed, dtype, and device challenges.",
+        "description": "Six shape, broadcasting, multiplication, storage, speed, dtype, and device challenges.",
         "weight": 1,
         "notebook": "notebooks/labs/02_tensor_lab.ipynb",
     },
@@ -118,6 +118,7 @@ LAB_STARTERS = {
     "02_tensor_lab.ipynb": [
         ("Prepare a batch", "t = torch.arange(12)\n\n# TODO: reshape to (3, 4) and (2, 2, 3), then flatten\n# Add an assertion after each operation."),
         ("Test broadcasting", "a = torch.zeros(3, 1)\nb = torch.zeros(4)\n\n# TODO: predict and assert the shape of a + b\n# TODO: add a length-3 bias to a (5, 3) batch"),
+        ("Compare `*` and `@`", "left = torch.tensor([[1.0, 2.0], [3.0, 4.0]])\nright = torch.tensor([[5.0, 6.0], [7.0, 8.0]])\n\n# TODO: predict and assert left * right and left @ right\n# TODO: use (4, 3) features and (3, 2) weights; explain why only @ works"),
         ("Inspect non-contiguous storage", "t = torch.arange(6).reshape(2, 3)\nprint('t stride:', t.stride())\nprint('t.T stride:', t.T.stride())\n\n# TODO: reproduce the view error, then fix it two ways"),
         ("Remove an element loop", "import time\nx = torch.randn(100_000)\n\n# TODO: time a Python element loop and x.sum()\n# Assert that the answers match, then print the speedup."),
         ("Make dtype and device explicit", "device = (\n    'cuda' if torch.cuda.is_available() else\n    'mps' if torch.backends.mps.is_available() else\n    'cpu'\n)\nprint('device:', device)\n\n# TODO: move a small model and batch to this device and run them"),

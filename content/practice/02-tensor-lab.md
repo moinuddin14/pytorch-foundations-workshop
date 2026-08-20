@@ -1,11 +1,11 @@
 +++
 title = "Tensor implementation lab"
-description = "Five shape, broadcasting, storage, speed, dtype, and device challenges."
+description = "Six shape, broadcasting, multiplication, storage, speed, dtype, and device challenges."
 weight = 1
 completable = true
 notebook = "notebooks/labs/02_tensor_lab.ipynb"
 +++
-Create one notebook or Python file and complete all five tasks. Predict each shape before running the code.
+Create one notebook or Python file and complete all six tasks. Predict each shape before running the code.
 ## 1. Prepare a batch
 
 Start with `t = torch.arange(12)`.
@@ -23,7 +23,22 @@ For `a = torch.zeros(3, 1)` and `b = torch.zeros(4)`:
 - Add a `(3,)` bias to every row of a `(5, 3)` batch.
 - Construct one incompatible pair and catch its `RuntimeError`.
 
-## 3. Debug a non-contiguous tensor
+## 3. Compare element-wise and matrix multiplication
+
+Create these two tensors:
+
+```python
+left = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
+right = torch.tensor([[5.0, 6.0], [7.0, 8.0]])
+```
+
+- Predict and calculate both `left * right` and `left @ right`.
+- Assert the complete expected value and shape of each result.
+- Write out the row-by-column calculation that produces `(left @ right)[0, 0]`.
+- Create `features` with shape `(4, 3)` and `weights` with shape `(3, 2)`. Assert the shape of `features @ weights`, then try `features * weights` and catch its `RuntimeError`.
+- In one sentence, explain when to use `*` and when to use `@`.
+
+## 4. Debug a non-contiguous tensor
 
 Use `t = torch.arange(6).reshape(2, 3)`.
 
@@ -32,11 +47,11 @@ Use `t = torch.arange(6).reshape(2, 3)`.
 - Reproduce the failing `t.T.view(6)` call.
 - Fix it with both `reshape(6)` and `contiguous().view(6)`.
 
-## 4. Remove an element loop
+## 5. Remove an element loop
 
 Create `x = torch.randn(100_000)`. Time a Python element loop and `x.sum()`. Assert that the results match within `1e-3`, then print the speedup.
 
-## 5. Make dtype and device explicit
+## 6. Make dtype and device explicit
 
 - Subtract integer labels from float predictions and inspect PyTorch's promoted dtype.
 - Repeat with `labels.float()` so the conversion is explicit.
@@ -74,6 +89,30 @@ def broadcasting():
         torch.zeros(3, 4) + torch.zeros(2, 4)
     except RuntimeError as error:
         print("broadcast error:", str(error).splitlines()[0])
+
+
+def multiplication_operators():
+    # Use * for corresponding elements; use @ for row-by-column linear transforms.
+    left = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
+    right = torch.tensor([[5.0, 6.0], [7.0, 8.0]])
+
+    elementwise = left * right
+    matrix_product = left @ right
+    assert elementwise.shape == (2, 2)
+    assert matrix_product.shape == (2, 2)
+    assert torch.equal(elementwise, torch.tensor([[5.0, 12.0], [21.0, 32.0]]))
+    assert torch.equal(matrix_product, torch.tensor([[19.0, 22.0], [43.0, 50.0]]))
+    assert matrix_product[0, 0].item() == 1 * 5 + 2 * 7
+
+    features = torch.arange(12, dtype=torch.float32).reshape(4, 3)
+    weights = torch.ones(3, 2)
+    assert (features @ weights).shape == (4, 2)
+    try:
+        features * weights
+    except RuntimeError as error:
+        print("element-wise error:", str(error).splitlines()[0])
+    else:
+        raise AssertionError("features * weights should fail because the shapes cannot broadcast")
 
 
 def strides():
@@ -118,6 +157,7 @@ def dtype_and_device():
 if __name__ == "__main__":
     shape_surgery()
     broadcasting()
+    multiplication_operators()
     strides()
     vectorization()
     dtype_and_device()

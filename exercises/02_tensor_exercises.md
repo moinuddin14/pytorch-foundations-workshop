@@ -1,6 +1,6 @@
 # Module 2 — Tensor implementation lab
 
-Create one notebook or Python file and complete all five tasks. Predict each shape before running the code. Runnable solutions: `python exercises/answers/02_tensors_answers.py`.
+Create one notebook or Python file and complete all six tasks. Predict each shape before running the code. Runnable solutions: `python exercises/answers/02_tensors_answers.py`.
 
 ## 1. Prepare a batch
 
@@ -19,7 +19,22 @@ For `a = torch.zeros(3, 1)` and `b = torch.zeros(4)`:
 - Add a `(3,)` bias to every row of a `(5, 3)` batch.
 - Construct one incompatible pair and catch its `RuntimeError`.
 
-## 3. Debug a non-contiguous tensor
+## 3. Compare element-wise and matrix multiplication
+
+Create these two tensors:
+
+```python
+left = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
+right = torch.tensor([[5.0, 6.0], [7.0, 8.0]])
+```
+
+- Predict and calculate both `left * right` and `left @ right`.
+- Assert the complete expected value and shape of each result.
+- Write out the row-by-column calculation that produces `(left @ right)[0, 0]`.
+- Create `features` with shape `(4, 3)` and `weights` with shape `(3, 2)`. Assert the shape of `features @ weights`, then try `features * weights` and catch its `RuntimeError`.
+- In one sentence, explain when to use `*` and when to use `@`.
+
+## 4. Debug a non-contiguous tensor
 
 Use `t = torch.arange(6).reshape(2, 3)`.
 
@@ -28,11 +43,11 @@ Use `t = torch.arange(6).reshape(2, 3)`.
 - Reproduce the failing `t.T.view(6)` call.
 - Fix it with both `reshape(6)` and `contiguous().view(6)`.
 
-## 4. Remove an element loop
+## 5. Remove an element loop
 
 Create `x = torch.randn(100_000)`. Time a Python element loop and `x.sum()`. Assert that the results match within `1e-3`, then print the speedup.
 
-## 5. Make dtype and device explicit
+## 6. Make dtype and device explicit
 
 - Subtract integer labels from float predictions and inspect PyTorch's promoted dtype.
 - Repeat with `labels.float()` so the conversion is explicit.

@@ -1,6 +1,6 @@
 +++
 title = "Inside a tensor"
-description = "Work with shapes, strides, broadcasting, dtypes, devices, and vectorized operations."
+description = "Work with shapes, strides, broadcasting, element-wise and matrix multiplication, dtypes, and devices."
 weight = 2
 completable = true
 notebook = "notebooks/02_tensors_properly.ipynb"
@@ -210,7 +210,83 @@ broadcast result shape: torch.Size([1000, 1000])
 correct? True
 {{< /output >}}
 
-## Lab 4: dtype and device
+## Lab 4: element-wise `*` vs. matrix `@`
+
+`*` multiplies corresponding elements (using broadcasting when possible). `@` performs linear algebra: each output value is a row-by-column dot product. For 2-D tensors, `(m, n) @ (n, p)` produces shape `(m, p)`.
+
+The same two `(2, 2)` tensors support both operations, so predict both results before running the cell.
+
+```python
+left = torch.tensor([[1.0, 2.0],
+                     [3.0, 4.0]])
+right = torch.tensor([[5.0, 6.0],
+                      [7.0, 8.0]])
+
+elementwise = left * right
+matrix_product = left @ right
+
+print("left * right (element-wise):", elementwise, sep="\n")
+print("\nleft @ right (matrix multiplication):", matrix_product, sep="\n")
+print("\nFirst @ value: 1*5 + 2*7 =", matrix_product[0, 0].item())
+
+assert torch.equal(elementwise, torch.tensor([[5.0, 12.0], [21.0, 32.0]]))
+assert torch.equal(matrix_product, torch.tensor([[19.0, 22.0], [43.0, 50.0]]))
+```
+
+{{< output >}}
+left * right (element-wise):
+tensor([[ 5., 12.],
+        [21., 32.]])
+
+left @ right (matrix multiplication):
+tensor([[19., 22.],
+        [43., 50.]])
+
+First @ value: 1*5 + 2*7 = 19.0
+{{< /output >}}
+
+### A neural-network-shaped example
+
+A batch shaped `(batch, input_features)` combines with weights shaped `(input_features, output_features)` by using `@`. Use `*` instead when you intend to scale corresponding features.
+
+```python
+features = torch.tensor([[1.0, 2.0, 3.0],
+                         [4.0, 5.0, 6.0]])  # (2 examples, 3 input features)
+weights = torch.tensor([[1.0, 0.0],
+                        [0.0, 1.0],
+                        [1.0, 1.0]])         # (3 input features, 2 outputs)
+
+transformed = features @ weights             # (2, 3) @ (3, 2) -> (2, 2)
+print("features @ weights shape:", transformed.shape)
+print(transformed)
+assert transformed.shape == (2, 2)
+
+elementwise_failed = False
+try:
+    features * weights                       # (2, 3) and (3, 2) cannot broadcast
+except RuntimeError:
+    elementwise_failed = True
+    print("features * weights fails: (2, 3) and (3, 2) are not broadcast-compatible")
+assert elementwise_failed
+
+feature_scale = torch.tensor([0.1, 1.0, 10.0])
+scaled = features * feature_scale             # (2, 3) * (3,) -> (2, 3)
+print("\nfeature-wise scaling with *:", scaled, sep="\n")
+assert scaled.shape == features.shape
+```
+
+{{< output >}}
+features @ weights shape: torch.Size([2, 2])
+tensor([[ 4.,  5.],
+        [10., 11.]])
+features * weights fails: (2, 3) and (3, 2) are not broadcast-compatible
+
+feature-wise scaling with *:
+tensor([[ 0.1000,  2.0000, 30.0000],
+        [ 0.4000,  5.0000, 60.0000]])
+{{< /output >}}
+
+## Lab 5: dtype and device
 
 Models usually use `float32`; class indices usually use `int64`. Every tensor in one operation must be on the same device. Run the cell, then explicitly convert an integer tensor with `.float()`.
 
@@ -273,7 +349,7 @@ input on        : mps:0
 forward pass works: torch.Size([3, 2])
 {{< /output >}}
 
-## Lab 5: replace a Python loop
+## Lab 6: replace a Python loop
 
 Time element-by-element summation against `x.sum()`. Then replace the loop in any one of your own examples with a tensor operation.
 

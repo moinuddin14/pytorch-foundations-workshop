@@ -25,6 +25,30 @@ def broadcasting():
         print("broadcast error:", str(error).splitlines()[0])
 
 
+def multiplication_operators():
+    # Use * for corresponding elements; use @ for row-by-column linear transforms.
+    left = torch.tensor([[1.0, 2.0], [3.0, 4.0]])
+    right = torch.tensor([[5.0, 6.0], [7.0, 8.0]])
+
+    elementwise = left * right
+    matrix_product = left @ right
+    assert elementwise.shape == (2, 2)
+    assert matrix_product.shape == (2, 2)
+    assert torch.equal(elementwise, torch.tensor([[5.0, 12.0], [21.0, 32.0]]))
+    assert torch.equal(matrix_product, torch.tensor([[19.0, 22.0], [43.0, 50.0]]))
+    assert matrix_product[0, 0].item() == 1 * 5 + 2 * 7
+
+    features = torch.arange(12, dtype=torch.float32).reshape(4, 3)
+    weights = torch.ones(3, 2)
+    assert (features @ weights).shape == (4, 2)
+    try:
+        features * weights
+    except RuntimeError as error:
+        print("element-wise error:", str(error).splitlines()[0])
+    else:
+        raise AssertionError("features * weights should fail because the shapes cannot broadcast")
+
+
 def strides():
     t = torch.arange(6).reshape(2, 3)
     assert t.stride() == (3, 1)
@@ -67,6 +91,7 @@ def dtype_and_device():
 if __name__ == "__main__":
     shape_surgery()
     broadcasting()
+    multiplication_operators()
     strides()
     vectorization()
     dtype_and_device()

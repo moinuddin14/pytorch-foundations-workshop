@@ -1,10 +1,28 @@
 {{ define "main" }}
-  <section class="list-hero container">
-    {{ partial "breadcrumbs.html" . }}
-    <p class="eyebrow">Workshop path</p>
-    <h1>{{ .Title }}</h1>
-    {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
-    {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
+  <section class="list-hero stellar-hero" data-stellar-hero>
+    {{ partial "stellar-backdrop.html" . }}
+    <div class="container stellar-content">
+      {{ partial "breadcrumbs.html" . }}
+      <div class="list-hero-grid">
+        <div class="list-hero-copy">
+          <p class="eyebrow hero-eyebrow"><span></span> Workshop path</p>
+          <h1>{{ .Title }}</h1>
+          {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+          {{ with .Content }}<div class="section-intro">{{ . }}</div>{{ end }}
+        </div>
+        <div class="route-visual" aria-hidden="true">
+          <div class="route-orbit route-orbit-one"><i></i></div>
+          <div class="route-orbit route-orbit-two"><i></i></div>
+          <div class="route-core">
+            <span>{{ len .Pages }}</span>
+            <small>Learning<br>stops</small>
+          </div>
+          <span class="route-node node-read">Read</span>
+          <span class="route-node node-run">Run</span>
+          <span class="route-node node-prove">Prove</span>
+        </div>
+      </div>
+    </div>
   </section>
   <section class="card-list container" aria-label="{{ .Title }} pages">
     {{ range .Pages.ByWeight }}

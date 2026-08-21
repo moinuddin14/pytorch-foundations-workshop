@@ -1,15 +1,33 @@
 {{ define "main" }}
+  <section class="article-hero stellar-hero" data-stellar-hero>
+    {{ partial "stellar-backdrop.html" . }}
+    <div class="container stellar-content">
+      {{ partial "breadcrumbs.html" . }}
+      <div class="article-hero-grid">
+        <header class="article-header">
+          {{ with .CurrentSection }}<p class="eyebrow hero-eyebrow"><span></span>{{ .Title }}</p>{{ end }}
+          <h1>{{ .Title }}</h1>
+          {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
+          {{ with .Params.notebook }}
+            {{ partial "lesson-actions.html" (dict "notebook" . "site" $.Site) }}
+          {{ end }}
+        </header>
+        <div class="concept-visual" aria-hidden="true">
+          <div class="concept-ring concept-ring-one"><i></i></div>
+          <div class="concept-ring concept-ring-two"><i></i></div>
+          <div class="concept-core">
+            <small>{{ if gt .Weight 0 }}Step{{ else }}Guide{{ end }}</small>
+            <strong>{{ if gt .Weight 0 }}{{ printf "%02d" .Weight }}{{ else }}→{{ end }}</strong>
+          </div>
+          <span class="concept-node concept-node-one">x</span>
+          <span class="concept-node concept-node-two">∇</span>
+          <span class="concept-node concept-node-three">W</span>
+        </div>
+      </div>
+    </div>
+  </section>
   <div class="page-shell">
     <article class="article">
-      {{ partial "breadcrumbs.html" . }}
-      <header class="article-header">
-        {{ with .CurrentSection }}<p class="eyebrow">{{ .Title }}</p>{{ end }}
-        <h1>{{ .Title }}</h1>
-        {{ with .Description }}<p class="lede">{{ . }}</p>{{ end }}
-        {{ with .Params.notebook }}
-          {{ partial "lesson-actions.html" (dict "notebook" . "site" $.Site) }}
-        {{ end }}
-      </header>
       <div class="article-body">
         {{ .Content }}
       </div>

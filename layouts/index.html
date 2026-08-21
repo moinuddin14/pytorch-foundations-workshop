@@ -1,37 +1,53 @@
 {{ define "main" }}
   {{- $logo := resources.Get "images/aiyatra-logo.png" -}}
   {{- $heroLogo := $logo.Resize "360x360 webp q90" -}}
-  <section class="home-hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="hero-presenter">
+  <section class="home-hero stellar-hero" data-stellar-hero>
+    {{ partial "stellar-backdrop.html" . }}
+    <div class="container hero-grid stellar-content">
+      <div class="hero-message">
+        <div class="hero-presenter glass-chip">
           <img src="{{ $heroLogo.RelPermalink }}" width="118" height="118" alt="AI Yatra — Research. Build. Transform.">
           <div><span>AI Yatra presents</span><strong>PyTorch Foundations Workshop</strong></div>
         </div>
-        <p class="eyebrow">Tensor → Gradient → Model</p>
-        <h1>Learn PyTorch by building it.</h1>
+        <p class="eyebrow hero-eyebrow"><span></span> Tensor → Gradient → Model</p>
+        <h1>Learn PyTorch by <span class="gradient-type">building it.</span></h1>
         <p class="hero-copy">Seven practical lessons, four implementation labs, and two from-scratch projects—readable on any phone and runnable in Google Colab.</p>
         <div class="hero-actions">
-          <a class="button primary" href="{{ "getting-started/" | relURL }}">Start here</a>
-          <a class="button secondary" href="{{ "modules/" | relURL }}">Browse modules</a>
+          <a class="button primary" href="{{ "getting-started/" | relURL }}">Start learning <span aria-hidden="true">→</span></a>
+          <a class="button secondary" href="{{ "modules/" | relURL }}">Explore the path</a>
         </div>
         <div class="hero-meta" aria-label="Workshop details">
-          <span><strong>3.5h</strong> workshop</span>
-          <span><strong>70%</strong> hands-on</span>
-          <span><strong>0</strong> setup on phone</span>
+          <span><strong>3.5h</strong><small>guided workshop</small></span>
+          <span><strong>70%</strong><small>hands-on</small></span>
+          <span><strong>Zero</strong><small>local setup</small></span>
         </div>
       </div>
-      <div class="loop-card" aria-label="The PyTorch training loop">
-        <p class="loop-label">The loop you will master</p>
-        <ol>
-          <li><span>01</span><code>pred = model(x)</code></li>
-          <li><span>02</span><code>loss = loss_fn(pred, y)</code></li>
-          <li><span>03</span><code>opt.zero_grad()</code></li>
-          <li><span>04</span><code>loss.backward()</code></li>
-          <li><span>05</span><code>opt.step()</code></li>
-        </ol>
+      <div class="hero-orbit-wrap">
+        <div class="orbit-line orbit-line-one" aria-hidden="true"><i></i></div>
+        <div class="orbit-line orbit-line-two" aria-hidden="true"><i></i></div>
+        <div class="loop-card" aria-label="The PyTorch training loop">
+          <div class="console-bar">
+            <span class="console-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>training_loop.py</span>
+            <span class="console-status"><i></i> Live</span>
+          </div>
+          <div class="console-body">
+            <p class="loop-label">The loop you will master</p>
+            <ol>
+              <li><span>01</span><code>pred = model(x)</code><i></i></li>
+              <li><span>02</span><code>loss = loss_fn(pred, y)</code><i></i></li>
+              <li><span>03</span><code>opt.zero_grad()</code><i></i></li>
+              <li><span>04</span><code>loss.backward()</code><i></i></li>
+              <li><span>05</span><code>opt.step()</code><i></i></li>
+            </ol>
+          </div>
+          <div class="console-footer"><span><i></i> CUDA ready</span><strong>loss 0.024</strong></div>
+        </div>
+        <div class="floating-token token-gradient" aria-hidden="true">∇</div>
+        <div class="floating-token token-tensor" aria-hidden="true">T</div>
       </div>
     </div>
+    <div class="hero-scroll-cue" aria-hidden="true"><span></span> Scroll to explore</div>
   </section>
 
   <section class="container home-section">

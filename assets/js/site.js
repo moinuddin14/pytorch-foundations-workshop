@@ -237,4 +237,75 @@ import { createUISFX } from "uisfx";
       window.requestAnimationFrame(updateProgress);
     }, { passive: true });
   }
+
+  const motionAllowed = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (motionAllowed && finePointer) {
+    document.querySelectorAll("[data-stellar-hero]").forEach((hero) => {
+      const starLayer = hero.querySelector("[data-star-layer]");
+      let lastStarX = 0;
+      let lastStarY = 0;
+      let lastStarTime = 0;
+
+      const spawnStar = (x, y, speed) => {
+        if (!starLayer || starLayer.childElementCount > 28) return;
+        const star = document.createElement("span");
+        const size = Math.min(18, 6 + speed * .26 + Math.random() * 7);
+        star.className = "cursor-star";
+        star.style.left = `${x + (Math.random() - .5) * 24}px`;
+        star.style.top = `${y + (Math.random() - .5) * 24}px`;
+        star.style.setProperty("--star-size", `${size}px`);
+        star.style.setProperty("--star-rotate", `${Math.random() * 45}deg`);
+        star.style.setProperty("--star-drift-x", `${(Math.random() - .5) * 34}px`);
+        star.style.setProperty("--star-drift-y", `${-8 - Math.random() * 28}px`);
+        star.style.color = Math.random() > .48 ? "#ffffff" : (Math.random() > .5 ? "#8cecff" : "#b6a6ff");
+        starLayer.appendChild(star);
+        star.addEventListener("animationend", () => star.remove(), { once: true });
+      };
+
+      hero.addEventListener("pointerenter", (event) => {
+        hero.classList.add("is-pointer-active");
+        const rect = hero.getBoundingClientRect();
+        lastStarX = event.clientX - rect.left;
+        lastStarY = event.clientY - rect.top;
+        lastStarTime = performance.now();
+        for (let index = 0; index < 4; index += 1) spawnStar(lastStarX, lastStarY, 14);
+      });
+
+      hero.addEventListener("pointermove", (event) => {
+        const rect = hero.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        const percentX = Math.max(0, Math.min(100, x / rect.width * 100));
+        const percentY = Math.max(0, Math.min(100, y / rect.height * 100));
+        const offsetX = (percentX - 50) * .24;
+        const offsetY = (percentY - 50) * .18;
+        hero.style.setProperty("--pointer-x", `${percentX}%`);
+        hero.style.setProperty("--pointer-y", `${percentY}%`);
+        hero.style.setProperty("--parallax-x", `${offsetX}px`);
+        hero.style.setProperty("--parallax-y", `${offsetY}px`);
+        hero.style.setProperty("--aurora-one", `hsl(${222 + percentX * .34} 86% 59%)`);
+        hero.style.setProperty("--aurora-two", `hsl(${170 + percentY * .48} 78% 48%)`);
+
+        const distance = Math.hypot(x - lastStarX, y - lastStarY);
+        const now = performance.now();
+        if (distance > 13 && now - lastStarTime > 30) {
+          spawnStar(x, y, distance);
+          lastStarX = x;
+          lastStarY = y;
+          lastStarTime = now;
+        }
+      }, { passive: true });
+
+      hero.addEventListener("pointerleave", () => {
+        hero.classList.remove("is-pointer-active");
+        hero.style.setProperty("--pointer-x", "72%");
+        hero.style.setProperty("--pointer-y", "28%");
+        hero.style.setProperty("--parallax-x", "0px");
+        hero.style.setProperty("--parallax-y", "0px");
+        hero.style.removeProperty("--aurora-one");
+        hero.style.removeProperty("--aurora-two");
+      });
+    });
+  }
 })();

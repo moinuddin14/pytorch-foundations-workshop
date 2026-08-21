@@ -7,7 +7,6 @@
 <link rel="manifest" href="{{ "manifest.webmanifest" | relURL }}">
 {{- $logo := resources.Get "images/aiyatra-logo.png" -}}
 {{- $favicon := $logo.Resize "96x96 png" -}}
-{{- $shareLogo := $logo.Resize "600x600 webp q90" -}}
 <link rel="icon" href="{{ $favicon.RelPermalink }}" type="image/png">
 {{ $css := resources.Get "css/site.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
@@ -15,4 +14,10 @@
 <meta property="og:description" content="{{ .Description | default site.Params.description }}">
 <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
-<meta property="og:image" content="{{ $shareLogo.Permalink }}">
+<meta property="og:image" content="{{ "og.png" | absURL }}">
+<meta property="og:image:width" content="1733">
+<meta property="og:image:height" content="907">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ .Description | default site.Params.description }}">
+<meta name="twitter:image" content="{{ "og.png" | absURL }}">

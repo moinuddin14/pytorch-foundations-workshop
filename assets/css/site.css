@@ -50,6 +50,10 @@ code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospac
 .site-nav a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 11px; border-radius: 10px; color: #405778; font-size: 14px; font-weight: 700; text-decoration: none; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--blue); background: #eef5ff; }
 .site-nav .github-link, .site-nav .linkedin-link { color: var(--blue); }
+.sound-toggle { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; padding: 0 11px; border: 0; border-radius: 10px; color: #405778; background: transparent; font-size: 14px; font-weight: 700; cursor: pointer; }
+.sound-toggle:hover { color: var(--blue); background: #eef5ff; }
+.sound-toggle svg { flex: 0 0 auto; }
+.sound-toggle[aria-pressed="false"] .sound-wave { opacity: 0; }
 .nav-toggle { display: none; width: 44px; height: 44px; padding: 11px; border: 0; border-radius: 10px; color: var(--blue); background: #eef5ff; cursor: pointer; }
 .nav-toggle span { display: block; height: 2px; margin: 5px 0; border-radius: 2px; background: currentColor; }
 
@@ -196,11 +200,15 @@ h3 { font-size: 1.25rem; }
 .footer-bottom p { margin: 0; color: var(--muted); font-size: .78rem; }
 .footer-bottom a { color: var(--blue); font-weight: 750; }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   .nav-toggle { display: block; }
   .site-nav { position: absolute; top: 76px; left: 0; right: 0; display: none; flex-direction: column; align-items: stretch; padding: 10px 15px 18px; border-top: 1px solid var(--line); background: #fff; box-shadow: 0 18px 30px rgba(6, 54, 124, .14); }
   .site-nav.is-open { display: flex; }
   .site-nav a { min-height: 48px; }
+  .sound-toggle { min-height: 48px; width: 100%; }
+}
+
+@media (max-width: 900px) {
   .hero-grid, .practice-grid { grid-template-columns: 1fr; }
   .loop-card { max-width: 620px; }
   .practice-grid { gap: 55px; }
@@ -215,10 +223,6 @@ h3 { font-size: 1.25rem; }
 @media (max-width: 720px) {
   body { font-size: 16px; }
   .container, .page-shell { width: min(calc(100% - 30px), var(--container)); }
-  .nav-toggle { display: block; }
-  .site-nav { position: absolute; top: 76px; left: 0; right: 0; display: none; flex-direction: column; align-items: stretch; padding: 10px 15px 18px; border-top: 1px solid var(--line); background: #fff; box-shadow: 0 18px 30px rgba(6, 54, 124, .14); }
-  .site-nav.is-open { display: flex; }
-  .site-nav a { min-height: 48px; }
   .brand-title { font-size: .9rem; }
   .home-hero { padding-top: 60px; }
   .path-grid, .project-grid, .card-list { grid-template-columns: 1fr; }

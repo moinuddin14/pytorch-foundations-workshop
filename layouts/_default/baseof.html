@@ -11,7 +11,7 @@
       {{ block "main" . }}{{ end }}
     </main>
     {{ partial "footer.html" . }}
-    {{ $js := resources.Get "js/site.js" | minify | fingerprint }}
+    {{ $js := resources.Get "js/site.js" | js.Build (dict "targetPath" "js/site.js" "minify" true) | fingerprint }}
     <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
     <script>
       if ("serviceWorker" in navigator) {

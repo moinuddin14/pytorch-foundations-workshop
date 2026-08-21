@@ -18,6 +18,13 @@
       {{ end }}
       <a class="github-link" href="{{ site.Params.githubRepo }}" rel="external">GitHub ↗</a>
       <a class="linkedin-link" href="{{ site.Params.linkedin }}" rel="external">LinkedIn ↗</a>
+      <button class="sound-toggle" type="button" aria-pressed="true" aria-label="Mute interface sounds" data-sound-toggle>
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+          <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor"></path>
+          <path class="sound-wave" d="M16 8.2a5 5 0 0 1 0 7.6M18.5 5.7a8.5 8.5 0 0 1 0 12.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+        </svg>
+        <span data-sound-label>Sound on</span>
+      </button>
     </nav>
   </div>
 </header>

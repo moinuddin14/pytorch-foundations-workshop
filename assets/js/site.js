@@ -2,30 +2,74 @@ import { createUISFX } from "uisfx";
 
 (() => {
   const uiSound = createUISFX({
-    pack: "zen",
-    volume: 0.72,
+    pack: "soft",
+    volume: 0.95,
     preferences: { key: "pytorch-foundations:sound" },
   });
   const soundToggle = document.querySelector("[data-sound-toggle]");
   const soundLabel = soundToggle?.querySelector("[data-sound-label]");
+  const cueVolumes = {
+    hover: 0.16,
+    open: 0.46,
+    close: 0.42,
+    forward: 0.42,
+    back: 0.42,
+    seek: 0.32,
+    expand: 0.38,
+    collapse: 0.34,
+    copy: 0.48,
+    error: 0.46,
+    check: 0.52,
+    uncheck: 0.38,
+    "progress-step": 0.28,
+    checkpoint: 0.48,
+    "toggle-on": 0.48,
+    "toggle-off": 0.44,
+  };
   let hasAudioInteraction = false;
+  let audioReady = false;
+  let unlockPromise = null;
+  let hasPreloaded = false;
 
-  const playSound = (cue, options) => uiSound.play(cue, options);
+  const unlockAudio = () => {
+    hasAudioInteraction = true;
+    if (!uiSound.isEnabled()) return Promise.resolve(false);
+    if (audioReady) return Promise.resolve(true);
+    if (!unlockPromise) {
+      if (soundToggle) soundToggle.dataset.audioState = "requested";
+      unlockPromise = uiSound.unlock().then((unlocked) => {
+        audioReady = unlocked;
+        if (soundToggle) soundToggle.dataset.audioState = unlocked ? "ready" : "blocked";
+        if (!unlocked) unlockPromise = null;
+        return unlocked;
+      });
+    }
+    return unlockPromise;
+  };
+  const playSound = (cue, options = {}) => {
+    if (!uiSound.isEnabled()) return null;
+    unlockAudio();
+    const playback = uiSound.play(cue, { volume: cueVolumes[cue], ...options });
+    if (playback && soundToggle) soundToggle.dataset.lastCue = cue;
+    return playback;
+  };
   const paintSoundToggle = () => {
     if (!soundToggle || !soundLabel) return;
     const enabled = uiSound.isEnabled();
     soundToggle.setAttribute("aria-pressed", String(enabled));
     soundToggle.setAttribute("aria-label", enabled ? "Mute interface sounds" : "Enable interface sounds");
+    const pending = soundToggle.dataset.audioState === "requested";
+    soundToggle.dataset.audioState = enabled ? (audioReady ? "ready" : (pending ? "requested" : "locked")) : "muted";
     soundLabel.textContent = enabled ? "Sound on" : "Sound off";
   };
   const prepareAudio = () => {
-    hasAudioInteraction = true;
-    if (!uiSound.isEnabled()) return;
-    uiSound.unlock().then((unlocked) => {
-      if (!unlocked) return;
+    unlockAudio().then((unlocked) => {
+      if (!unlocked || hasPreloaded) return;
+      hasPreloaded = true;
       uiSound.preload([
         "hover", "open", "close", "forward", "back", "expand", "collapse",
-        "copy", "check", "uncheck", "progress-step", "checkpoint", "error",
+        "seek", "copy", "check", "uncheck", "progress-step", "checkpoint",
+        "error", "toggle-on", "toggle-off",
       ]);
     });
   };
@@ -34,14 +78,22 @@ import { createUISFX } from "uisfx";
   document.addEventListener("keydown", prepareAudio, { capture: true, once: true });
 
   paintSoundToggle();
-  soundToggle?.addEventListener("click", () => {
-    const enabled = !uiSound.isEnabled();
-    uiSound.setEnabled(enabled);
-    paintSoundToggle();
-    if (enabled) {
-      uiSound.unlock();
+  soundToggle?.addEventListener("click", async () => {
+    if (soundToggle.getAttribute("aria-busy") === "true") return;
+    soundToggle.setAttribute("aria-busy", "true");
+    if (uiSound.isEnabled()) {
+      const confirmation = playSound("toggle-off");
+      await Promise.race([
+        confirmation?.ended ?? Promise.resolve(),
+        new Promise((resolve) => window.setTimeout(resolve, 420)),
+      ]);
+      uiSound.setEnabled(false);
+    } else {
+      uiSound.setEnabled(true);
       playSound("toggle-on");
     }
+    paintSoundToggle();
+    soundToggle.removeAttribute("aria-busy");
   });
 
   const navToggle = document.querySelector("[data-nav-toggle]");
@@ -66,25 +118,37 @@ import { createUISFX } from "uisfx";
     if (link.getAttribute("href")?.startsWith("#")) return "seek";
     return "forward";
   };
+  let navigationPending = false;
   const playNavigation = (event) => {
     const link = event.target.closest("a[href]");
-    if (!link || link.classList.contains("skip-link")) return;
-    playSound(navigationCue(link));
+    if (!link || link.classList.contains("skip-link") || event.defaultPrevented) return;
+    const cue = navigationCue(link);
+    const destination = new URL(link.href, window.location.href);
+    const sameDocument = destination.origin === window.location.origin
+      && destination.pathname === window.location.pathname
+      && destination.search === window.location.search;
+    const modified = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+    const opensElsewhere = link.target && link.target !== "_self";
+
+    if (sameDocument || modified || opensElsewhere || link.hasAttribute("download")) {
+      playSound(cue);
+      return;
+    }
+
+    event.preventDefault();
+    if (navigationPending) return;
+    navigationPending = true;
+    const playback = playSound(cue);
+    window.setTimeout(() => window.location.assign(link.href), playback ? 160 : 0);
   };
-  document.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
-    playNavigation(event);
-  });
-  document.addEventListener("click", (event) => {
-    if (event.detail === 0) playNavigation(event);
-  });
+  document.addEventListener("click", playNavigation);
 
   const hoverSelector = ".button, .content-card, .path-grid a, .project-grid a, .page-nav a, .site-nav a, .footer-links a";
   document.addEventListener("pointerover", (event) => {
     if (!hasAudioInteraction || event.pointerType === "touch") return;
     const target = event.target.closest(hoverSelector);
     const previous = event.relatedTarget?.closest?.(hoverSelector);
-    if (target && target !== previous) playSound("hover", { volume: 0.1 });
+    if (target && target !== previous) playSound("hover");
   });
 
   document.querySelectorAll(".article-body pre").forEach((pre) => {
@@ -161,7 +225,7 @@ import { createUISFX } from "uisfx";
       progress.style.width = `${ratio * 100}%`;
       if (nextMilestone < milestones.length && ratio >= milestones[nextMilestone]) {
         const atEnd = nextMilestone === milestones.length - 1;
-        playSound(atEnd ? "checkpoint" : "progress-step", { volume: atEnd ? 0.18 : 0.1 });
+        playSound(atEnd ? "checkpoint" : "progress-step");
         nextMilestone += 1;
       }
       ticking = false;
